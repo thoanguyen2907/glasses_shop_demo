@@ -1,11 +1,3 @@
-/**
- * B1: Hiển thị Danh sách kính
- * _Glasses
- * _GlassesList
- * B2: Xây dựng chức năng thử kính
- * B3: Xây dựng chức năng so sánh
- */
-
 let dataGlasses = [
   {
     id: "G1",
@@ -17,6 +9,7 @@ let dataGlasses = [
     price: 150,
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis ea voluptates officiis? ",
+    status: true,
   },
   {
     id: "G2",
@@ -28,6 +21,7 @@ let dataGlasses = [
     price: 150,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In assumenda earum eaque doloremque, tempore distinctio.",
+    status: true,
   },
   {
     id: "G3",
@@ -38,6 +32,7 @@ let dataGlasses = [
     color: "Blue",
     price: 100,
     description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
+    status: true,
   },
   {
     id: "G4",
@@ -48,6 +43,7 @@ let dataGlasses = [
     color: "Red",
     price: 100,
     description: "In assumenda earum eaque doloremque, tempore distinctio.",
+    status: true,
   },
   {
     id: "G5",
@@ -59,6 +55,7 @@ let dataGlasses = [
     price: 180,
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error odio minima sit labore optio officia?",
+    status: true,
   },
   {
     id: "G6",
@@ -69,6 +66,7 @@ let dataGlasses = [
     color: "Blue, White",
     price: 120,
     description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
+    status: true,
   },
   {
     id: "G7",
@@ -80,6 +78,7 @@ let dataGlasses = [
     price: 120,
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim sint nobis incidunt non voluptate quibusdam.",
+    status: true,
   },
   {
     id: "G8",
@@ -91,6 +90,7 @@ let dataGlasses = [
     price: 120,
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, unde enim.",
+    status: true,
   },
   {
     id: "G9",
@@ -102,28 +102,21 @@ let dataGlasses = [
     price: 120,
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit consequatur soluta ad aut laborum amet.",
+    status: true,
   },
 ];
 
-//Import các lớp đối tượng vào main
 import {Glasses} from "./glasses.js";
 import {GlassesList} from "./glassesList.js";
 
 let glassesList = new GlassesList();
+//show the array of GlassesList
+//create function show the array of glassesList
+//transform each object in data into Glasses object
+//push the Glasses object into the array of glassesList
 
-//Hàm rút gọn cú pháp lấy elementbyID
-const getELE = (id) => {
-  return document.getElementById(id);
-};
-
-//Hàm hiển thị danh sách kính
-//Khai báo hàm
 const showGlassesList = () => {
-  let divGlassesList = getELE("vglassesList");
-
-  //Tạo đối tượng kính và thêm kính vào danh cách kính
-  //duyệt mảng data
-  dataGlasses.map((item, index) => {
+  dataGlasses.map((item) => {
     let gl = new Glasses(
       item.id,
       item.src,
@@ -132,80 +125,52 @@ const showGlassesList = () => {
       item.name,
       item.color,
       item.price,
-      item.description
+      item.description,
+      item.status
     );
     glassesList.addGlasses(gl);
   });
-
-  // console.log(glassesList.glist);
+  let divGlassesList = document.getElementById("vglassesList");
   divGlassesList.innerHTML = glassesList.renderGlassesForEach();
 };
-//Gọi hàm
-showGlassesList();
 
-const tryOnGlasses = (e) => {
-  // console.log(e);
-  let gID = e.target.getAttribute("data-id");
+showGlassesList();
+const tryOnGlasses = (event) => {
+  //which glasses is being clicked
+  let gID = event.target.getAttribute("data-id");
   let gObject = {};
-  //value là một đối tượng kính trong danh sách kính
-  for (let value of glassesList.glist) {
+  //seach for target glasses in the array of glasses
+  for (let value of glassesList.glassesList) {
     if (value.id == gID) {
       gObject = value;
     }
   }
   console.log("gID", gID);
   console.log("gObject", gObject);
-  //Gọi hàm
   showInfo(gObject);
 };
-
 window.tryOnGlasses = tryOnGlasses;
-
-//Khai báo hàm
 const showInfo = (gObject) => {
-  let divAvatar = getELE("avatar");
-  let divInfo = getELE("glassesInfo");
-
+  let divAvatar = document.getElementById("avatar");
+  let divInfo = document.getElementById("glassesInfo");
   divAvatar.innerHTML = `
-        <img id="glasses" src="${gObject.virtualImg}">
-    `;
-
+    <img id="glasses" src="${gObject.virtual_Img}">
+`;
   let status = "";
   if (gObject.status) {
     status = "Stocking";
   } else {
     status = "Sold Out";
   }
-
   divInfo.innerHTML = `
-        <h5>${gObject.name} - ${gObject.brand} (${gObject.color})</h5>
-        <p class="card-text"> 
-            <span class="btn btn-danger btn-sm mr-2">$${gObject.price}</span>
-            <span class="text-success">${status}</span>
-        </p>
-        <p class="card-text"> 
-            ${gObject.desc}
-        </p>
-    `;
-
+  <h5>${gObject.name} - ${gObject.brand} (${gObject.color})</h5>
+  <p class="card-text"> 
+      <span class="btn btn-danger btn-sm mr-2">$${gObject.price}</span>
+      <span class="text-success">${status}</span>
+  </p>
+  <p class="card-text"> 
+      ${gObject.description}
+  </p>
+`;
   divInfo.style.display = "block";
 };
-/**
- * Before
- * After
- */
-
-const removeGlasses = (isDisplay) => {
-  let glasses = getELE("glasses");
-
-  if (glasses == null) {
-    return;
-  }
-  if (isDisplay) {
-    glasses.style.opacity = 0.9;
-  } else {
-    glasses.style.opacity = 0;
-  }
-};
-
-window.removeGlasses = removeGlasses;
